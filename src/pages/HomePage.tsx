@@ -1,7 +1,15 @@
 import { Cloud, Play, ChartBar, MessageCircle, LogOut, Calendar } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
-export default function HomePage() {
+type HomePageProps = {
+  onStartQuiz: () => void;
+  onShowProgress: () => void;
+  onNavigateHome: () => void;
+  onNavigateQuiz: () => void;
+  onNavigateProgress: () => void;
+};
+
+export default function HomePage({ onStartQuiz, onShowProgress, onNavigateHome, onNavigateQuiz, onNavigateProgress }: HomePageProps) {
   const { profile, signOut } = useAuth();
 
   const daysUntilExam = (() => {
@@ -15,20 +23,27 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-950 via-slate-900 to-slate-950 flex flex-col">
-      <header className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+      <header className="flex flex-wrap items-center justify-between gap-4 px-5 py-4 border-b border-white/5">
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-sky-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-sky-500/20">
             <Cloud className="w-5 h-5 text-white" />
           </div>
           <span className="text-white font-semibold text-sm sm:text-base">Azure Mwalimu</span>
         </div>
-        <button
-          onClick={signOut}
-          className="flex items-center gap-2 text-slate-400 hover:text-white text-sm font-medium transition-colors"
-        >
-          <LogOut className="w-4 h-4" />
-          <span className="hidden sm:inline">Sign Out</span>
-        </button>
+        <div className="flex items-center gap-3">
+          <nav aria-label="Main navigation" className="flex items-center gap-1">
+            <button onClick={onNavigateHome} aria-current="page" className="rounded-lg bg-white/10 px-3 py-2 text-sm text-white">Home</button>
+            <button onClick={onNavigateQuiz} className="rounded-lg px-3 py-2 text-sm text-slate-400 hover:text-white transition-colors">Quiz</button>
+            <button onClick={onNavigateProgress} className="rounded-lg px-3 py-2 text-sm text-slate-400 hover:text-white transition-colors">My Progress</button>
+          </nav>
+          <button
+            onClick={signOut}
+            className="flex items-center gap-2 text-slate-400 hover:text-white text-sm font-medium transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">Sign Out</span>
+          </button>
+        </div>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center px-6 py-12">
@@ -54,7 +69,7 @@ export default function HomePage() {
         </div>
 
         <div className="w-full max-w-md space-y-4">
-          <button className="group w-full p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-left hover:bg-white/10 hover:border-sky-500/30 transition-all flex items-center gap-4">
+          <button onClick={onStartQuiz} className="group w-full p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-left hover:bg-white/10 hover:border-sky-500/30 transition-all flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500/20 to-cyan-500/20 border border-sky-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
               <Play className="w-6 h-6 text-sky-400" />
             </div>
@@ -64,7 +79,7 @@ export default function HomePage() {
             </div>
           </button>
 
-          <button className="group w-full p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-left hover:bg-white/10 hover:border-sky-500/30 transition-all flex items-center gap-4">
+          <button onClick={onShowProgress} className="group w-full p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-left hover:bg-white/10 hover:border-sky-500/30 transition-all flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
               <ChartBar className="w-6 h-6 text-emerald-400" />
             </div>
