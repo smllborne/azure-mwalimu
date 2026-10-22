@@ -1,4 +1,4 @@
-import { Cloud, Play, ChartBar, MessageCircle, LogOut, Calendar } from 'lucide-react';
+import { Cloud, Play, ChartBar, LogOut, Calendar } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 type HomePageProps = {
@@ -89,15 +89,6 @@ export default function HomePage({ onStartQuiz, onShowProgress, onNavigateHome, 
             </div>
           </button>
 
-          <button className="group w-full p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-left hover:bg-white/10 hover:border-sky-500/30 transition-all flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-              <MessageCircle className="w-6 h-6 text-amber-400" />
-            </div>
-            <div className="flex-1">
-              <h3 className="text-white font-semibold text-base">Ask Mwalimu</h3>
-              <p className="text-slate-500 text-sm mt-0.5">Get explanations for tricky cloud concepts</p>
-            </div>
-          </button>
         </div>
       </main>
 
