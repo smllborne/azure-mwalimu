@@ -10,6 +10,7 @@ const domains = [
 ] as const;
 
 type QuizPageProps = {
+  initialTopicIds?: string[];
   onNavigateHome: () => void;
   onNavigateQuiz: () => void;
   onNavigateProgress: () => void;
@@ -23,7 +24,7 @@ function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((item) => typeof item === 'string');
 }
 
-export default function QuizPage({ onNavigateHome, onNavigateQuiz, onNavigateProgress }: QuizPageProps) {
+export default function QuizPage({ initialTopicIds, onNavigateHome, onNavigateQuiz, onNavigateProgress }: QuizPageProps) {
   const { user } = useAuth();
   const [topics, setTopics] = useState<TopicGroup[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -114,6 +115,19 @@ export default function QuizPage({ onNavigateHome, onNavigateQuiz, onNavigatePro
       }
       setTopics([...groupedTopics.values()].sort((a, b) => a.name.localeCompare(b.name)));
       setQuestions(validQuestions);
+      if (initialTopicIds?.length) {
+        const practiceQuestions = validQuestions
+          .filter((question) => initialTopicIds.includes(question.topic_id))
+          .sort(() => Math.random() - 0.5);
+        if (practiceQuestions.length) {
+          setQuizQuestions(practiceQuestions);
+          setQuestionIndex(0);
+          setIsReview(false);
+          setStage('playing');
+        } else {
+          setLoadError('There are no quiz questions available for these topics yet.');
+        }
+      }
       setLoading(false);
     }
 
@@ -121,7 +135,7 @@ export default function QuizPage({ onNavigateHome, onNavigateQuiz, onNavigatePro
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [initialTopicIds]);
 
   const currentQuestion = quizQuestions[questionIndex];
   const percentage = quizQuestions.length ? Math.round((results.filter((result) => result.isCorrect).length / quizQuestions.length) * 100) : 0;
